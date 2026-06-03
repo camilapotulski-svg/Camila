@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agro - Make a Deposit</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #2d5016;
+            --secondary-green: #4a7c2c;
+            --accent-green: #7cb342;
+            --light-green: #e8f5e9;
+            --earth-brown: #6d4c41;
+            --sky-blue: #4dd0e1;
+            --text-dark: #2c3e50;
+            --text-light: #7f8c8d;
+            --border-light: #ecf0f1;
+            --error-red: #e74c3c;
+            --success-green: #27ae60;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: white;
+            padding: 40px 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-content h1.logo {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header-content .tagline {
+            font-size: 1.1em;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .deposit-section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .deposit-section h2 {
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+
+        .section-description {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+
+        /* Form Styles */
+        .deposit-form {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        legend {
+            color: var(--secondary-green);
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light-green);
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border-light);
+            border-radius: 6px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--secondary-green);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(74, 124, 44, 0.1);
+        }
+
+        input:invalid:not(:placeholder-shown),
+        select:invalid {
+            border-color: var(--error-red);
+        }
+
+        small {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.85em;
+            margin-top: 5px;
+        }
+
+        /* Form Row */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Currency Input */
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .currency {
+            position: absolute;
+            left: 15px;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .input-wrapper input {
+            padding-left: 35px;
+        }
+
+        /* Payment Options */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fafafa;
+        }
+
+        .payment-option input[type="radio"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: var(--secondary-green);
+        }
+
+        .payment-option:hover {
+            border-color: var(--secondary-green);
+            background-color: white;
+        }
+
+        .payment-option input[type="radio"]:checked + span {
+            color: var(--secondary-green);
+            font-weight: 600;
+        }
+
+        .payment-option input[type="radio"]:checked {
+            border-color: var(--secondary-green);
+        }
+
+        .payment-details {
+            background-color: var(--light-green);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .info-text {
+            background-color: #e3f2fd;
+            padding: 12px 15px;
+            border-left: 4px solid var(--sky-blue);
+            color: var(--text-dark);
+            font-size: 0.9em;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+
+        /* Checkbox Group */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 12px;
+            margin-top: 4px;
+            cursor: pointer;
+            accent-color: var(--secondary-green);
+        }
+
+        .checkbox-group span {
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        /* Estimated Returns */
+        .estimated-returns {
+            background: linear-gradient(135deg, var(--light-green) 0%, #c8e6c9 100%);
+            padding: 20px;
+            border-radius: 6px;
+            border-left: 4px solid var(--secondary-green);
+            margin: 20px 0;
+        }
+
+        .estimated-returns h3 {
+            color: var(--primary-green);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .estimated-returns p {
+            color: var(--text-dark);
+            margin: 5px 0;
+            font-size: 0.95em;
+        }
+
+        .estimated-returns strong {
+            color: var(--secondary-green);
+            font-weight: 600;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: linear-gradient(135deg, var(--secondary-green) 0%, var(--primary-green) 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #bdc3c1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+            border: 2px solid var(--success-green);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .success-message h3 {
+            color: var(--primary-green);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .success-message p {
+            color: var(--text-dark);
+            margin: 10px 0;
+            font-size: 0.95em;
+        }
+
+        /* Info Section */
+        .info-section {
+            grid-column: 1 / -1;
+            margin-top: 40px;
+        }
+
+        .info-section h2 {
+            color: var(--primary-green);
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        .info-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            color: var(--secondary-green);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            color: var(--text-light);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-green);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 12px;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .deposit-section {
+                padding: 25px;
+            }
+
+            .header {
+                padding: 30px 15px;
+                margin-bottom: 30px;
+            }
+
+            .header-content h1.logo {
+                font-size: 1.8em;
+            }
+
+            .info-cards {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .payment-options {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        input.invalid,
+        select.invalid {
+            border-color: #e74c3c !important;
+            background-color: #fadbd8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">🌱 Agro</h1>
+                <p class="tagline">A strong, sustainable future: balance between production and the environment</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section class="deposit-section">
+                <h2>Make a Deposit</h2>
+                <p class="section-description">Invest in sustainable agriculture and help us create a better future for our planet.</p>
+
+                <!-- Deposit Form -->
+                <form id="depositForm" class="deposit-form">
+                    <!-- Personal Information -->
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                        
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">Email *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Deposit Details -->
+                    <fieldset>
+                        <legend>Deposit Details</legend>
+                        
+                        <div class="form-group">
+                            <label for="amount">Deposit Amount (USD) *</label>
+                            <div class="input-wrapper">
+                                <span class="currency">$</span>
+                                <input type="number" id="amount" name="amount" min="100" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <small>Minimum deposit: $100</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="depositType">Deposit Type *</label>
+                            <select id="depositType" name="depositType" required>
+                                <option value="">Select a deposit type</option>
+                                <option value="crop">Crop Production Support</option>
+                                <option value="soil">Soil Health & Conservation</option>
+                                <option value="water">Water Management</option>
+                                <option value="renewable">Renewable Energy</option>
+                                <option value="general">General Sustainability Fund</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="term">Investment Term *</label>
+                            <select id="term" name="term" required>
+                                <option value="">Select investment term</option>
+                                <option value="6">6 Months</option>
+                                <option value="12">12 Months</option>
+                                <option value="24">24 Months</option>
+                                <option value="36">36 Months</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- Payment Method -->
+                    <fieldset>
+                        <legend>Payment Method</legend>
+                        
+                        <div class="payment-options">
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="credit-card" checked>
+                                <span>Credit/Debit Card</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="bank-transfer">
+                                <span>Bank Transfer</span>
+                            </label>
+                            <label class="payment-option">
+                                <input type="radio" name="paymentMethod" value="digital-wallet">
+                                <span>Digital Wallet</span>
+                            </label>
+                        </div>
+
+                        <div id="cardDetails" class="payment-details">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cardName">Cardholder Name *</label>
+                                    <input type="text" id="cardName" name="cardName">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Expiry Date *</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV *</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="bankDetails" class="payment-details" style="display: none;">
+                            <div class="form-group">
+                                <label for="bankName">Bank Name *</label>
+                                <input type="text" id="bankName" name="bankName">
+                            </div>
+                            <div class="form-group">
+                                <label for="accountNumber">Account Number *</label>
+                                <input type="text" id="accountNumber" name="accountNumber">
+                            </div>
+                            <p class="info-text">📋 Transfer instructions will be provided after submission.</p>
+                        </div>
+
+                        <div id="walletDetails" class="payment-details" style="display: none;">
+                            <div class="form-group">
+                                <label for="walletAddress">Wallet Address/ID *</label>
+                                <input type="text" id="walletAddress" name="walletAddress" placeholder="e.g., PayPal email or crypto wallet">
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Agreement -->
+                    <fieldset>
+                        <legend>Agreement</legend>
+                        
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="terms" required>
+                            <span>I agree to the Terms and Conditions</span>
+                        </label>
+
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="privacy">
+                            <span>I agree to the Privacy Policy</span>
+                        </label>
+
+                        <label class="checkbox-group">
+                            <input type="checkbox" name="newsletter">
+                            <span>I want to receive updates about sustainable agriculture initiatives</span>
+                        </label>
+                    </fieldset>
+
+                    <!-- Estimated Returns Display -->
+                    <div class="estimated-returns" id="estimatedReturns" style="display: none;">
+                        <h3>Estimated Returns</h3>
+                        <p>Annual Interest Rate: <strong id="interestRate">5%</strong></p>
+                        <p>Estimated Return: <strong id="estimatedAmount">$0.00</strong></p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">Complete Deposit</button>
+                </form>
+
+                <!-- Success Message -->
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <h3>✅ Deposit Submitted Successfully!</h3>
+                    <p>Your deposit application has been received. You will receive a confirmation email shortly.</p>
+                    <p>Thank you for investing in a sustainable future with Agro!</p>
+                </div>
+            </section>
+
+            <!-- Info Cards -->
+            <section class="info-section">
+                <h2>Why Invest with Agro?</h2>
+                <div class="info-cards">
+                    <div class="card">
+                        <div class="card-icon">🌍</div>
+                        <h3>Environmental Impact</h3>
+                        <p>Your investment directly supports sustainable farming practices that reduce carbon emissions and promote biodiversity.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">📈</div>
+                        <h3>Competitive Returns</h3>
+                        <p>Earn competitive interest rates while contributing to a better future for agriculture and the environment.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🛡️</div>
+                        <h3>Secure & Transparent</h3>
+                        <p>All investments are protected and monitored with full transparency on how funds are utilized.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Agro. A strong, sustainable future: balance between production and the environment.</p>
+        </footer>
+    </div>
+
+    <script>
+        // DOM Elements
+        const depositForm = document.getElementById('depositForm');
+        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        const cardDetails = document.getElementById('cardDetails');
+        const bankDetails = document.getElementById('bankDetails');
+        const walletDetails = document.getElementById('walletDetails');
+        const amountInput = document.getElementById('amount');
+        const termSelect = document.getElementById('term');
+        const successMessage = document.getElementById('successMessage');
+        const estimatedReturns = document.getElementById('estimatedReturns');
+        const interestRateSpan = document.getElementById('interestRate');
+        const estimatedAmountSpan = document.getElementById('estimatedAmount');
+        const cardNumberInput = document.getElementById('cardNumber');
+        const expiryDateInput = document.getElementById('expiryDate');
+        const cvvInput = document.getElementById('cvv');
+
+        // Interest rates for different investment terms (annual)
+        const INTEREST_RATES = {
+            6: 0.04,   // 4% for 6 months
+            12: 0.05,  // 5% for 12 months
+            24: 0.06,  // 6% for 24 months
+            36: 0.07   // 7% for 36 months
+        };
+
+        // Initialize event listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeEventListeners();
+            updatePaymentMethod();
+        });
+
+        function initializeEventListeners() {
+            paymentMethodRadios.forEach(radio => {
+                radio.addEventListener('change', updatePaymentMethod);
+            });
+
+            amountInput.addEventListener('input', calculateEstimatedReturns);
+            termSelect.addEventListener('change', calculateEstimatedReturns);
+
+            depositForm.addEventListener('submit', handleFormSubmit);
+
+            cardNumberInput.addEventListener('input', formatCardNumber);
+            expiryDateInput.addEventListener('input', formatExpiryDate);
+            cvvInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            });
+        }
+
+        function updatePaymentMethod() {
+            const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
+            cardDetails.style.display = 'none';
+            bankDetails.style.display = 'none';
+            walletDetails.style.display = 'none';
+
+            switch (selectedMethod) {
+                case 'credit-card':
+                    cardDetails.style.display = 'block';
+                    setPaymentFieldsRequired(['cardName', 'cardNumber', 'expiryDate', 'cvv']);
+                    setPaymentFieldsNotRequired(['bankName', 'accountNumber', 'walletAddress']);
+                    break;
+                case 'bank-transfer':
+                    bankDetails.style.display = 'block';
+                    setPaymentFieldsRequired(['bankName', 'accountNumber']);
+                    setPaymentFieldsNotRequired(['cardName', 'cardNumber', 'expiryDate', 'cvv', 'walletAddress']);
+                    break;
+                case 'digital-wallet':
+                    walletDetails.style.display = 'block';
+                    setPaymentFieldsRequired(['walletAddress']);
+                    setPaymentFieldsNotRequired(['cardName', 'cardNumber', 'expiryDate', 'cvv', 'bankName', 'accountNumber']);
+                    break;
+            }
+        }
+
+        function setPaymentFieldsRequired(fieldIds) {
+            fieldIds.forEach(id => {
+                const field = document.getElementById(id);
+                if (field) field.setAttribute('required', '');
+            });
+        }
+
+        function setPaymentFieldsNotRequired(fieldIds) {
+            fieldIds.forEach(id => {
+                const field = document.getElementById(id);
+                if (field) {
+                    field.removeAttribute('required');
+                    field.value = '';
+                }
+            });
+        }
+
+        function formatCardNumber(e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/[^0-9]/g, '');
+            let formattedValue = '';
+
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+
+            e.target.value = formattedValue;
+
+            if (value.length === 16) {
+                validateCardNumber(value);
+            }
+        }
+
+        function formatExpiryDate(e) {
+            let value = e.target.value.replace(/\D/g, '');
+
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+
+            e.target.value = value;
+        }
+
+        function validateCardNumber(cardNumber) {
+            let sum = 0;
+            let isEven = false;
+
+            for (let i = cardNumber.length - 1; i >= 0; i--) {
+                let digit = parseInt(cardNumber[i], 10);
+
+                if (isEven) {
+                    digit *= 2;
+                    if (digit > 9) {
+                        digit -= 9;
+                    }
+                }
+
+                sum += digit;
+                isEven = !isEven;
+            }
+
+            return sum % 10 === 0;
+        }
+
+        function calculateEstimatedReturns() {
+            const amount = parseFloat(amountInput.value) || 0;
+            const term = parseInt(termSelect.value) || 0;
+
+            if (amount > 0 && term > 0) {
+                const annualRate = INTEREST_RATES[term];
+                const monthlyRate = annualRate / 12;
+                const months = term;
+                const estimatedReturn = amount * (monthlyRate * months);
+
+                estimatedReturns.style.display = 'block';
+                interestRateSpan.textContent = `${(annualRate * 100).toFixed(0)}%`;
+                estimatedAmountSpan.textContent = `$${estimatedReturn.toFixed(2)}`;
+            } else {
+                estimatedReturns.style.display = 'none';
+            }
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (!depositForm.checkValidity()) {
+                showFormErrors();
+                return;
+            }
+
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            if (paymentMethod === 'credit-card') {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                if (!validateCardNumber(cardNumber)) {
+                    alert('Invalid card number. Please check and try again.');
+                    return;
+                }
+
+                const expiryDate = document.getElementById('expiryDate').value;
+                if (!isValidExpiryDate(expiryDate)) {
+                    alert('Invalid expiry date. Please use MM/YY format.');
+                    return;
+                }
+
+                const cvv = document.getElementById('cvv').value;
+                if (cvv.length < 3) {
+                    alert('Invalid CVV. Please enter a valid CVV.');
+                    return;
+                }
+            }
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                depositType: document.getElementById('depositType').value,
+                term: document.getElementById('term').value,
+                paymentMethod: paymentMethod,
+                timestamp: new Date().toISOString(),
+                agreedToTerms: document.querySelector('input[name="terms"]').checked,
+                agreedToPrivacy: document.querySelector('input[name="privacy"]').checked,
+                subscribedToNewsletter: document.querySelector('input[name="newsletter"]').checked
+            };
+
+            console.log('Deposit submitted:', formData);
+            processDeposit(formData);
+        }
+
+        function isValidExpiryDate(expiryDate) {
+            const pattern = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!pattern.test(expiryDate)) {
+                return false;
+            }
+
+            const [month, year] = expiryDate.split('/');
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear() % 100;
+            const currentMonth = currentDate.getMonth() + 1;
+
+            const expiryYear = parseInt(year, 10);
+            const expiryMonth = parseInt(month, 10);
+
+            if (expiryYear < currentYear) {
+                return false;
+            }
+
+            if (expiryYear === currentYear && expiryMonth < currentMonth) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function processDeposit(formData) {
+            depositForm.style.display = 'none';
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+
+            const deposits = JSON.parse(localStorage.getItem('agro_deposits')) || [];
+            deposits.push(formData);
+            localStorage.setItem('agro_deposits', JSON.stringify(deposits));
+
+            console.log(`Sending confirmation email to: ${formData.email}`);
+
+            setTimeout(() => {
+                resetForm();
+            }, 5000);
+        }
+
+        function resetForm() {
+            depositForm.reset();
+            depositForm.style.display = 'block';
+            successMessage.style.display = 'none';
+            estimatedReturns.style.display = 'none';
+            updatePaymentMethod();
+        }
+
+        function showFormErrors() {
+            const inputs = depositForm.querySelectorAll('input, select');
+            let firstInvalidField = null;
+
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.classList.add('invalid');
+                    if (!firstInvalidField) {
+                        firstInvalidField = input;
+                    }
+
+                    input.addEventListener('input', () => {
+                        if (input.checkValidity()) {
+                            input.classList.remove('invalid');
+                        }
+                    });
+                }
+            });
+
+            if (firstInvalidField) {
+                firstInvalidField.focus();
+                alert('Please fill in all required fields correctly.');
+            }
+        }
+
+        function displayStoredDeposits() {
+            const deposits = JSON.parse(localStorage.getItem('agro_deposits')) || [];
+            console.log('Stored deposits:', deposits);
+            return deposits;
+        }
+
+        function clearStoredDeposits() {
+            localStorage.removeItem('agro_deposits');
+            console.log('All stored deposits cleared.');
+        }
+
+        window.displayStoredDeposits = displayStoredDeposits;
+        window.clearStoredDeposits = clearStoredDeposits;
+    </script>
+</body>
+</html>
